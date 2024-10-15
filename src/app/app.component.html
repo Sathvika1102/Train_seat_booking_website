@@ -1,0 +1,49 @@
+<div>
+  <h1>Train Seat Booking</h1>
+  <div style="text-align: center; margin-bottom: 20px;">
+    <label for="seatCount">Enter number of seats to book (1-7):</label>
+    <input
+      type="number"
+      id="seatCount"
+      [(ngModel)]="seatCount"
+      (keydown)="handleKeydown($event)"
+      min="1"
+      max="7"
+    />
+    <button (click)="bookSeats()">Book Seats</button>
+  </div>
+  <!-- Diaplaying the seats to users -->
+  <h2>Available Seats:</h2>
+  <div *ngFor="let row of seatService.rows">
+    <div class="seat-container">
+      <div
+        *ngFor="let seat of row; let i = index"
+        [class.booked]="
+          seatService.availability[seatService.seats.indexOf(seat)] === 0
+        "
+        [class.available]="
+          seatService.availability[seatService.seats.indexOf(seat)] === 1
+        "
+        class="seat"
+      >
+        {{ seat }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Seat Status Legend Section -->
+  <div class="legend-container">
+    <div class="legend-item">
+      <span class="status-box" style="background-color: red;"></span> Booked
+    </div>
+  </div>
+
+  <!-- Section to display booked seats for the current user -->
+  <h2>Your Booked Seats:</h2>
+  <div *ngIf="bookedSeats.length > 0">
+    <p>{{ bookedSeats.join(', ') }}</p>
+  </div>
+  <div *ngIf="bookedSeats.length === 0">
+    <p>No seats booked yet.</p>
+  </div>
+</div>
